@@ -87,5 +87,5 @@ def evaluate_lean_fixing():
         dataset=dataset,
         solver=lean_agent,
         scorer=lean_proof_scorer(),
-        sandbox="docker"
+        sandbox=("docker", "docker/Dockerfile")
     )
