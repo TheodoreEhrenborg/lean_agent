@@ -7,6 +7,7 @@ from inspect_ai.tool import bash_session
 from inspect_ai.util import sandbox
 
 # Define the MIL.lean files and the target files to be fixed
+# TODO This should use the actual MIL files instead of making some up
 SAMPLE1_MIL = """import MIL.C01_Introduction.S01_Getting_Started"""
 SAMPLE1_TARGET = """-- This file contains sorries that need to be replaced with valid proofs
 
@@ -79,6 +80,7 @@ def evaluate_lean_fixing():
         - For inductive proofs, use 'induction' followed by appropriate tactics
         - When you're done, make sure 'lake build | grep sorry' returns nothing
         """,
+        # TODO Should the timeout be larger?
         tools=[bash_session()],
         attempts=3,
     )
