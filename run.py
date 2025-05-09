@@ -8,21 +8,12 @@ from inspect_ai.util import sandbox
 
 # Define the MIL.lean files and the target files to be fixed
 # TODO This should use the actual MIL files instead of making some up
-SAMPLE1_MIL = """import MIL.C01_Introduction.S01_Getting_Started"""
-SAMPLE1_TARGET = """-- This file contains sorries that need to be replaced with valid proofs
+SAMPLE1_MIL = """import MIL.C02_Basics.S01_Calculating"""
 
-def add_comm (a b : ℕ) : a + b = b + a := sorry
 
-theorem add_assoc (a b c : ℕ) : (a + b) + c = a + (b + c) := sorry
-"""
 
-SAMPLE2_MIL = """import MIL.C01_Introduction.S02_Overview"""
-SAMPLE2_TARGET = """-- This file contains sorries that need to be replaced with valid proofs
 
-theorem mul_add (a b c : ℕ) : a * (b + c) = a * b + a * c := sorry
-
-theorem zero_mul (a : ℕ) : 0 * a = 0 := sorry
-"""
+SAMPLE2_MIL = """import MIL.C02_Basics.S02_Proving_Identities_in_Algebraic_Structures"""
 
 @scorer(metrics=[accuracy()])
 def lean_proof_scorer():
@@ -50,14 +41,12 @@ def evaluate_lean_fixing():
             input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
             files={
                 "MIL.lean": SAMPLE1_MIL,
-                "MIL/C01_Introduction/S01_Getting_Started.lean": SAMPLE1_TARGET
             },
         ),
         Sample(
             input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
             files={
                 "MIL.lean": SAMPLE2_MIL,
-                "MIL/C01_Introduction/S02_Overview.lean": SAMPLE2_TARGET
             },
         )
     ])
