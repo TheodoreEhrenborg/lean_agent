@@ -3,7 +3,7 @@ from inspect_ai import Task, task
 from inspect_ai.dataset import MemoryDataset, Sample
 from inspect_ai.scorer import Score, accuracy, scorer
 from inspect_ai.agent import react
-from inspect_ai.tool import bash_session
+from inspect_ai.tool import bash_session, text_editor
 from inspect_ai.util import sandbox
 
 # Define the MIL.lean files and the target files to be fixed
@@ -70,7 +70,7 @@ def evaluate_lean_fixing():
         - When you're done, make sure 'lake build | grep sorry' returns nothing
         """,
         # TODO Should the timeout be larger?
-        tools=[bash_session()],
+        tools=[bash_session(), text_editor()],
         attempts=3,
     )
 
