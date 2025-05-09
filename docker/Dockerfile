@@ -8,3 +8,4 @@ RUN git clone https://github.com/leanprover-community/mathematics_in_lean.git
 WORKDIR /workspace/mathematics_in_lean
 RUN /root/.elan/bin/lake exe cache get
 RUN /root/.elan/bin/lake build
+ENV PATH="$PATH:/root/.elan/bin/"
