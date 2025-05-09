@@ -11,3 +11,4 @@ wheels/
 .mypy-cache
 
 .env
+.aider*
