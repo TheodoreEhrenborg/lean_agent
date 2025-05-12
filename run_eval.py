@@ -1,4 +1,3 @@
-import asyncio
 from inspect_ai import Task, task
 from inspect_ai.dataset import MemoryDataset, Sample
 from inspect_ai.scorer import Score, accuracy, scorer
@@ -11,9 +10,8 @@ from inspect_ai.util import sandbox
 SAMPLE1_MIL = """import MIL.C02_Basics.S01_Calculating"""
 
 
-
-
 SAMPLE2_MIL = """import MIL.C02_Basics.S02_Proving_Identities_in_Algebraic_Structures"""
+
 
 @scorer(metrics=[accuracy()])
 def lean_proof_scorer():
@@ -21,7 +19,9 @@ def lean_proof_scorer():
         # Run lake build to check if proofs are valid
         build_result = await sandbox().exec(["lake", "build"])
         if not build_result.success:
-            return Score(value=0, explanation=f"lake build failed: {build_result.stderr}")
+            return Score(
+                value=0, explanation=f"lake build failed: {build_result.stderr}"
+            )
 
         # Check for remaining sorries
         check_sorries = await sandbox().exec(["bash", "-c", "lake build | grep sorry"])
@@ -34,22 +34,25 @@ def lean_proof_scorer():
 
     return score
 
+
 @task
 def evaluate_lean_fixing():
-    dataset = MemoryDataset([
-        Sample(
-            input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
-            files={
-                "MIL.lean": SAMPLE1_MIL,
-            },
-        ),
-        Sample(
-            input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
-            files={
-                "MIL.lean": SAMPLE2_MIL,
-            },
-        )
-    ])
+    dataset = MemoryDataset(
+        [
+            Sample(
+                input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
+                files={
+                    "MIL.lean": SAMPLE1_MIL,
+                },
+            ),
+            Sample(
+                input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
+                files={
+                    "MIL.lean": SAMPLE2_MIL,
+                },
+            ),
+        ]
+    )
 
     lean_agent = react(
         description="Expert Lean theorem prover",
@@ -78,5 +81,5 @@ def evaluate_lean_fixing():
         dataset=dataset,
         solver=lean_agent,
         scorer=lean_proof_scorer(),
-        sandbox=("docker", "docker/Dockerfile")
+        sandbox=("docker", "docker/Dockerfile"),
     )
