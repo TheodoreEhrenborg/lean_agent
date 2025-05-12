@@ -59,22 +59,19 @@ def evaluate_lean_fixing():
     lean_agent = react(
         description="Expert Lean theorem prover",
         prompt="""
-        You are an expert in the Lean theorem prover. Your task is to fix Lean files by replacing 'sorry' statements with valid proofs.
+        You are an expert in the Lean theorem prover.
+        Your task is to fix Lean files by replacing 'sorry' statements with valid proofs.
 
         Follow these steps:
-        1. Run 'lake build' to see the current state of the project
+        1. Run `lake build` to see the current state of the project
         2. Examine the file that needs to be fixed
         3. Replace each 'sorry' with a complete proof
-        4. Run 'lake build' again to verify your proofs
+        4. Run `lake build` again to verify your proofs
         5. If there are still errors or sorries, fix them and repeat
 
-        Tips for writing proofs in Lean:
-        - Use tactics like 'rw', 'induction', 'cases', 'simp', etc.
-        - For simple arithmetic properties, try 'rw' with existing theorems
-        - For inductive proofs, use 'induction' followed by appropriate tactics
-        - When you're done, make sure 'lake build | grep sorry' returns nothing
+        When you're done, make sure `lake build` succeeds.
+        Then make sure that `lake build | grep sorry` returns nothing
         """,
-        # TODO Also tell the agent to use lake build, and maybe make the prompt smaller
         # TODO Should the timeout be larger?
         tools=[bash_session(), text_editor()],
         attempts=3,
