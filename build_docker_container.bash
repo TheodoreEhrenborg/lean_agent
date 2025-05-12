@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 cd docker/
-docker build .
+docker build -t lean_agent .
