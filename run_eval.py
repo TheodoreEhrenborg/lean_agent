@@ -68,6 +68,7 @@ def evaluate_lean_fixing():
         - For inductive proofs, use 'induction' followed by appropriate tactics
         - When you're done, make sure 'lake build | grep sorry' returns nothing
         """,
+        # TODO Also tell the agent to use lake build, and maybe make the prompt smaller
         # TODO Should the timeout be larger?
         tools=[bash_session(), text_editor()],
         attempts=3,
