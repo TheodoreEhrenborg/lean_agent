@@ -31,6 +31,7 @@ def lean_proof_scorer():
 
 
 def build_dataset():
+    subprocess.run(["./build_docker_image.bash"], check=True)
     # Get MIL.lean contents from Docker
     mil_contents = subprocess.run(
         ["docker", "run", "lean_agent", "cat", "MIL.lean"],
