@@ -39,12 +39,17 @@ def evaluate_lean_fixing():
     # Get MIL.lean contents from Docker
     mil_contents = await get_mil_contents()
     
-    dataset = MemoryDataset([
+    # Split contents into lines and create a sample for each
+    mil_lines = mil_contents.split('\n')
+    samples = [
         Sample(
             input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
-            files={"MIL.lean": mil_contents},
+            files={"MIL.lean": line}
         )
-    ])
+        for line in mil_lines if line.strip()  # Skip empty lines
+    ]
+    
+    dataset = MemoryDataset(samples)
 
     lean_agent = react(
         description="Expert Lean theorem prover",
