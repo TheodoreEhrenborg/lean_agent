@@ -5,13 +5,12 @@ from inspect_ai.scorer import Score, accuracy, scorer
 from inspect_ai.tool import bash_session, text_editor
 from inspect_ai.util import sandbox
 
-# Define the MIL.lean files and the target files to be fixed
-# TODO This should use the actual MIL files instead of making some up
-SAMPLE1_MIL = """import MIL.C02_Basics.S01_Calculating"""
-
-
-SAMPLE2_MIL = """import MIL.C02_Basics.S02_Proving_Identities_in_Algebraic_Structures"""
-
+async def get_mil_contents():
+    """Get the contents of MIL.lean from the Docker container"""
+    result = await sandbox().exec(["docker", "run", "lean_agent", "cat", "MIL.lean"])
+    if not result.success:
+        raise RuntimeError(f"Failed to get MIL.lean contents: {result.stderr}")
+    return result.stdout
 
 @scorer(metrics=[accuracy()])
 def lean_proof_scorer():
@@ -37,18 +36,15 @@ def lean_proof_scorer():
 
 @task
 def evaluate_lean_fixing():
-    dataset = MemoryDataset(
-        [
-            Sample(
-                input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
-                files={"MIL.lean": SAMPLE1_MIL},
-            ),
-            Sample(
-                input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
-                files={"MIL.lean": SAMPLE2_MIL},
-            ),
-        ]
-    )
+    # Get MIL.lean contents from Docker
+    mil_contents = await get_mil_contents()
+    
+    dataset = MemoryDataset([
+        Sample(
+            input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
+            files={"MIL.lean": mil_contents},
+        )
+    ])
 
     lean_agent = react(
         description="Expert Lean theorem prover",
