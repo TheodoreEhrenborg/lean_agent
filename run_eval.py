@@ -1,3 +1,5 @@
+import subprocess
+
 from inspect_ai import Task, task
 from inspect_ai.agent import react
 from inspect_ai.dataset import MemoryDataset, Sample
@@ -27,27 +29,31 @@ def lean_proof_scorer():
 
     return score
 
-import subprocess
+
 def build_dataset():
     # Get MIL.lean contents from Docker
-    mil_contents = subprocess.run(["docker", "run", "lean_agent", "cat", "MIL.lean"],  capture_output=True, check=True).stdout
-    mil_lines = mil_contents.split('\n')
+    mil_contents = subprocess.run(
+        ["docker", "run", "lean_agent", "cat", "MIL.lean"],
+        capture_output=True,
+        check=True,
+    ).stdout
+    mil_lines = mil_contents.split("\n")
     samples = [
         Sample(
             input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
-            files={"MIL.lean": line}
+            files={"MIL.lean": line},
         )
-        for line in mil_lines if line.strip()  # Skip empty lines
+        for line in mil_lines
+        if line.strip()  # Skip empty lines
     ]
-    return  MemoryDataset(samples)
+    return MemoryDataset(samples)
+
 
 DATASET = build_dataset()
 
+
 @task
 def evaluate_lean_fixing():
-
-
-
     lean_agent = react(
         description="Expert Lean theorem prover",
         prompt="""
