@@ -5,12 +5,6 @@ from inspect_ai.scorer import Score, accuracy, scorer
 from inspect_ai.tool import bash_session, text_editor
 from inspect_ai.util import sandbox
 
-async def get_mil_contents():
-    """Get the contents of MIL.lean from the Docker container"""
-    result = await sandbox().exec(["docker", "run", "lean_agent", "cat", "MIL.lean"])
-    if not result.success:
-        raise RuntimeError(f"Failed to get MIL.lean contents: {result.stderr}")
-    return result.stdout
 
 @scorer(metrics=[accuracy()])
 def lean_proof_scorer():
@@ -33,13 +27,10 @@ def lean_proof_scorer():
 
     return score
 
-
-@task
-def evaluate_lean_fixing():
+import subprocess
+def build_dataset():
     # Get MIL.lean contents from Docker
-    mil_contents = await get_mil_contents()
-    
-    # Split contents into lines and create a sample for each
+    mil_contents = subprocess.run(["docker", "run", "lean_agent", "cat", "MIL.lean"],  capture_output=True, check=True).stdout
     mil_lines = mil_contents.split('\n')
     samples = [
         Sample(
@@ -48,8 +39,14 @@ def evaluate_lean_fixing():
         )
         for line in mil_lines if line.strip()  # Skip empty lines
     ]
-    
-    dataset = MemoryDataset(samples)
+    return  MemoryDataset(samples)
+
+DATASET = build_dataset()
+
+@task
+def evaluate_lean_fixing():
+
+
 
     lean_agent = react(
         description="Expert Lean theorem prover",
@@ -76,7 +73,7 @@ def evaluate_lean_fixing():
     )
 
     return Task(
-        dataset=dataset,
+        dataset=DATASET,
         solver=lean_agent,
         scorer=lean_proof_scorer(),
         sandbox=("docker", "docker/Dockerfile"),
