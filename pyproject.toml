@@ -8,3 +8,13 @@ dependencies = [
     "anthropic>=0.51.0",
     "inspect-ai>=0.3.94",
 ]
+
+[tool.ruff.lint]
+ignore = ["F722"]
+extend-select = ["I"]
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.format]
+skip-magic-trailing-comma = true

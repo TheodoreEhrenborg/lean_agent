@@ -1,7 +1,7 @@
 from inspect_ai import Task, task
+from inspect_ai.agent import react
 from inspect_ai.dataset import MemoryDataset, Sample
 from inspect_ai.scorer import Score, accuracy, scorer
-from inspect_ai.agent import react
 from inspect_ai.tool import bash_session, text_editor
 from inspect_ai.util import sandbox
 
@@ -41,15 +41,11 @@ def evaluate_lean_fixing():
         [
             Sample(
                 input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
-                files={
-                    "MIL.lean": SAMPLE1_MIL,
-                },
+                files={"MIL.lean": SAMPLE1_MIL},
             ),
             Sample(
                 input="Fix the Lean file by replacing all 'sorry' statements with valid proofs. Run 'lake build' to check your work. Repeat until there are no more sorries.",
-                files={
-                    "MIL.lean": SAMPLE2_MIL,
-                },
+                files={"MIL.lean": SAMPLE2_MIL},
             ),
         ]
     )
