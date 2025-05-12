@@ -6,16 +6,20 @@ https://github.com/leanprover-community/mathematics_in_lean/
 
 ## Installation
 
-1. Install with [uv](https://github.com/astral-sh/uv) with `curl -LsSf https://astral.sh/uv/install.sh | sh`
+1. Install [uv](https://github.com/astral-sh/uv) with `curl -LsSf https://astral.sh/uv/install.sh | sh`
 1. The LLM agent runs in a Docker sandbox.
    To prepare the Docker image, run `./build_docker_image.bash`.
    This will take ~10 minutes and use up ~10 GB of disk space---it's
    downloading a cached version of [mathlib4](https://github.com/leanprover-community/mathlib4).
-1. Then you can run the evaluation with `uv run inspect eval run_eval.py`. `uv` will handle the necessary Python dependencies.
+1. `uv sync` will handle the necessary Python dependencies.
+
+## Running the eval
+
+`uv run inspect eval run_eval.py`
 
 ## Viewing results
 
-TODO
+`uv run inspect view`
 
 ## Future work
 
@@ -33,13 +37,9 @@ TODO
 ## How to run on NixOS
 
 uv doesn't work well on machines that don't follow the Filesystem Hierarchy Standard (e.g. NixOS).
-The solution is to have a separate development docker container,
-TODO
-To run uv in this case, use the provided Dockerfile:
+The solution is to run commands in a separate development docker container:
 
-1. Build the image with `./build.sh` TODO
-1. Enter the container with `./run.sh`. If you have GPUs, instead use `./run.sh --gpus all` TODO
-1. To mount a results directory, use `./run.sh -v /absolute/host/path/to/results/:/results` TODO
-1. Then inside the container you can run `uv run ...` as before
-
-TODO Mount port and mount the docker socket
+1. Run `./build_docker_image.bash` as before
+1. Run `./build_dev_image.bash`
+1. Enter the container with `./run_dev_container.bash -v /var/run/docker.sock:/var/run/docker.sock -p 7575:7575`. The port is necessary for viewing results. The socket allows this development container to spin up sandboxes for the LLM agent.
+1. Inside this container, uv will work as described above. Then inside the container you can run `uv run ...` as before. When viewing results, use `uv run inspect view --host 0.0.0.0`.
