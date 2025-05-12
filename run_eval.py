@@ -36,6 +36,7 @@ def build_dataset():
         ["docker", "run", "lean_agent", "cat", "MIL.lean"],
         capture_output=True,
         check=True,
+        text=True,
     ).stdout
     mil_lines = mil_contents.split("\n")
     samples = [
