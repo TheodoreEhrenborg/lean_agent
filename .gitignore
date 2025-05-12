@@ -13,3 +13,4 @@ wheels/
 .env
 .aider*
 logs/
+.direnv
