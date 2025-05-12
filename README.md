@@ -25,15 +25,14 @@ To run uv in this case, use the provided Dockerfile:
 1. Then inside the container you can run `uv run ...` as before
 
 ## Future work
+
 - Some of the files from `mathematics_in_lean` should be filtered out, e.g. `MIL/C01_Introduction/S02_Overview.lean` contains Fermat's Last Theorem, which models are not currently able to prove
-    - Although I saw Claude decide that this exercise was too hard, so Claude replaced it with an easier exercise
+  - Although I saw Claude decide that this exercise was too hard, so Claude replaced it with an easier exercise
 - There are no checks for cheating. The scorer should be upgraded to check that the models haven't modified the theorem statements, either using an LLM or parsing the code directly.
-    - A sufficiently clever model might realize that there are solutions in the same folder. It would be interesting to measure this.
+  - A sufficiently clever model might realize that there are solutions in the same folder. It would be interesting to measure this.
 - The files from `mathematics_in_lean` often contain more than one exercise.
   LLMs sometimes struggle to fix all the exercises simultaneously and figure out which exercise is broken.
   Ideally I'd split the files so that there was one exercise per file. This could be done:
   - manually
   - using an LLM
   - writing some sort of hacky parser to look for `sorry`
-
-
