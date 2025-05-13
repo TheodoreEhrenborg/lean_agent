@@ -4,7 +4,15 @@ TODO blurb
 
 https://github.com/leanprover-community/mathematics_in_lean/
 
-## Installation
+## Quickstart
+
+This will allow you to see the results of a sample evaluation, but it won't
+install the larger dependencies that are necessary to run the evaluation.
+
+1. Install [uv](https://github.com/astral-sh/uv) with `curl -LsSf https://astral.sh/uv/install.sh | sh`
+1. Run `uv run inspect view` TODO adjust the path
+
+## Full installation
 
 1. Install [uv](https://github.com/astral-sh/uv) with `curl -LsSf https://astral.sh/uv/install.sh | sh`
 1. The LLM agent runs in a Docker sandbox.
@@ -13,9 +21,13 @@ https://github.com/leanprover-community/mathematics_in_lean/
    downloading a cached version of [mathlib4](https://github.com/leanprover-community/mathlib4).
 1. `uv sync` will handle the necessary Python dependencies.
 
+## API key TODO
+
 ## Running the eval
 
 `uv run inspect eval run_eval.py`
+
+TODO number of samples
 
 ## Viewing results
 
