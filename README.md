@@ -21,7 +21,18 @@ install the larger dependencies that are necessary to run the evaluation.
    downloading a cached version of [mathlib4](https://github.com/leanprover-community/mathlib4).
 1. `uv sync` will handle the necessary Python dependencies.
 
-## API key TODO
+## Configuration
+
+Put this in `.env`:
+
+```sh
+ANTHROPIC_API_KEY=<secret key here>
+INSPECT_EVAL_MODEL=anthropic/claude-3-5-sonnet-latest
+```
+
+If you want to use a different provider, adjust the environment variables
+as described [here](https://inspect.aisi.org.uk/#getting-started),
+and hence update the Python dependencies (e.g. `uv add openai`).
 
 ## Running the eval
 
