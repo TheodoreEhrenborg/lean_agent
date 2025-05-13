@@ -33,6 +33,8 @@ ANTHROPIC_API_KEY=<secret key here>
 INSPECT_EVAL_MODEL=anthropic/claude-3-5-sonnet-latest
 ```
 
+(i.e. `.env` should match `.env.example`, but with values filled in)
+
 If you want to use a different provider, adjust the environment variables
 as described [here](https://inspect.aisi.org.uk/#getting-started),
 and hence update the Python dependencies (e.g. `uv add openai`).
