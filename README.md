@@ -43,7 +43,8 @@ and hence update the Python dependencies (e.g. `uv add openai`).
 
 `uv run inspect eval run_eval.py`
 
-TODO number of samples
+You can restrict to only a few samples using `--limit`
+(see [here](https://inspect.aisi.org.uk/options.html) for the full list of options).
 
 ## Viewing results
 
