@@ -1,8 +1,11 @@
 # lean_agent
 
-TODO blurb
+This repository uses [inspect](https://inspect.aisi.org.uk) to see how many
+of the problems from
+[mathematics_in_lean](https://github.com/leanprover-community/mathematics_in_lean/)
+can be solved by an LLM.
 
-https://github.com/leanprover-community/mathematics_in_lean/
+TODO Set up sample logs
 
 ## Quickstart
 
@@ -56,6 +59,7 @@ TODO number of samples
   - manually
   - using an LLM
   - writing some sort of hacky parser to look for `sorry`
+- Does `lake build` have an option to produce more structured output (e.g. when talking to an IDE)?
 
 ## How to run on NixOS
 
