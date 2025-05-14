@@ -5,15 +5,13 @@ of the problems from
 [mathematics_in_lean](https://github.com/leanprover-community/mathematics_in_lean/)
 can be solved by an LLM.
 
-TODO Set up sample logs
-
 ## Quickstart
 
 This will allow you to see the results of a sample evaluation, but it won't
 install the larger dependencies that are necessary to run the evaluation.
 
 1. Install [uv](https://github.com/astral-sh/uv) with `curl -LsSf https://astral.sh/uv/install.sh | sh`
-1. Run `uv run inspect view` TODO adjust the path
+1. Run `uv run inspect view --log-dir sample_logs`
 
 ## Full installation
 
