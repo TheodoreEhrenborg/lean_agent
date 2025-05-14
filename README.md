@@ -52,10 +52,10 @@ You can restrict to only a few samples using `--limit`
 
 - Some of the files from `mathematics_in_lean` should be filtered out, e.g. `MIL/C01_Introduction/S02_Overview.lean` contains Fermat's Last Theorem, which models are not currently able to prove
   - Although I saw Claude decide that this exercise was too hard, so Claude replaced it with an easier exercise
-- There are no checks for cheating. The scorer should be upgraded to check that the models haven't modified the theorem statements, either using an LLM or parsing the code directly.
-  - A sufficiently clever model might realize that there are solutions in the same folder. It would be interesting to measure this.
+- There are no checks for cheating. The scorer should be upgraded to check that the models haven't modified the theorem statements. This new scorer could either use an LLM or parse the code directly.
+  - A sufficiently clever model might realize that there are solutions in the same folder. It would be interesting to check whether models do this.
 - The files from `mathematics_in_lean` often contain more than one exercise.
-  LLMs sometimes struggle to fix all the exercises simultaneously and figure out which exercise is broken.
+  LLMs often struggle to fix all the exercises simultaneously and figure out which exercise is broken.
   Ideally I'd split the files so that there was one exercise per file. This could be done:
   - manually
   - using an LLM
@@ -70,4 +70,4 @@ The solution is to run commands in a separate development docker container:
 1. Run `./build_docker_image.bash` as before
 1. Run `./build_dev_image.bash`
 1. Enter the container with `./run_dev_container.bash -v /var/run/docker.sock:/var/run/docker.sock -p 7575:7575`. The port is necessary for viewing results. The socket allows this development container to spin up sandboxes for the LLM agent.
-1. Inside this container, uv will work as described above. Then inside the container you can run `uv run ...` as before. When viewing results, use `uv run inspect view --host 0.0.0.0`.
+1. Inside this container, you can run `uv run ...` as before. When viewing results, use `uv run inspect view --host 0.0.0.0`.
